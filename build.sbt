@@ -3,11 +3,13 @@ import sbtcrossproject.CrossPlugin.autoImport.{CrossType, crossProject}
 
 ThisBuild / organization := "org.julienrf"
 
-ThisBuild / scalaVersion := "2.13.3"
+ThisBuild / scalaVersion := "3.3.3"
 
-ThisBuild / crossScalaVersions := Seq(scalaVersion.value, "2.12.8")
+ThisBuild / crossScalaVersions := Seq(scalaVersion.value, "2.13.15", "2.12.20")
 
 ThisBuild / versionPolicyIntention := Compatibility.None
+
+ThisBuild / version := "11.0.0-local"
 
 ThisBuild / mimaBinaryIssueFilters ++= Seq(
   // package private method
@@ -38,12 +40,20 @@ val library =
     .settings(
       name := "play-json-derived-codecs",
       libraryDependencies ++= Seq(
-        "com.chuusai" %%% "shapeless" % "2.3.3",
-        "org.scalatest" %%% "scalatest" % "3.2.3" % Test,
-        "org.scalacheck" %%% "scalacheck" % "1.15.2" % Test,
-        "org.scalatestplus" %%% "scalacheck-1-15" % "3.2.3.0" % Test,
-        "org.playframework" %%% "play-json" % "3.0.1"
+        "org.scalatest" %%% "scalatest" % "3.2.19" % Test,
+        "org.scalacheck" %%% "scalacheck" % "1.15.4" % Test,
+        "org.scalatestplus" %%% "scalacheck-1-15" % "3.2.11.0" % Test,
+        "org.playframework" %%% "play-json" % "3.0.4"
       ),
+      libraryDependencies ++= {
+        CrossVersion.partialVersion(scalaVersion.value) match {
+          case Some((2, _)) => Seq(
+            "com.chuusai" %%% "shapeless" % "2.3.3"
+          )
+          case _ =>
+            Seq.empty
+        }
+      },
       scalacOptions ++= {
         Seq(
           "-deprecation",
