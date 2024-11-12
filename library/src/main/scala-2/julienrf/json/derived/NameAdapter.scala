@@ -1,5 +1,3 @@
-package julienrf.json.derived
-
 /** Adapter function to transform case classes member names during the derivation process
   *
   * A NameAdapter can be used to customize the derivation process, allowing to apply a transformation function
